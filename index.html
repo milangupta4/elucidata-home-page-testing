@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data-Centric AI Solutions for Biomedical R&D | Elucidata</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a1628;
+    --ink-soft:#1c2b42;
+    --paper:#f7f5f0;
+    --paper-warm:#efeae1;
+    --teal:#0d5c63;
+    --teal-bright:#10898f;
+    --coral:#ff5a3c;
+    --coral-soft:#ff7a5f;
+    --gold:#e8b04b;
+    --line:#d8d2c6;
+    --line-dark:#26354c;
+    --white:#ffffff;
+    --display:'Fraunces',serif;
+    --sans:'Archivo',sans-serif;
+    --mono:'IBM Plex Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--paper);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+  .sec-head{max-width:66ch;margin-bottom:54px}
+  .sec-kicker{font-family:var(--mono);font-size:12.5px;letter-spacing:1.2px;text-transform:uppercase;color:var(--coral);margin-bottom:14px}
+  .sec-title{font-family:var(--display);font-weight:500;font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-1px}
+  .sec-intro{font-size:18px;color:var(--ink-soft);margin-top:20px;line-height:1.6}
+
+  /* ---------- TOP BAR ---------- */
+  .announce{background:var(--ink);color:var(--paper);font-size:13px;text-align:center;padding:9px 20px;font-family:var(--mono);letter-spacing:.2px}
+  .announce a{color:var(--gold);font-weight:600;border-bottom:1px solid transparent;transition:border .2s}
+  .announce a:hover{border-bottom:1px solid var(--gold)}
+
+  /* ---------- NAV ---------- */
+  header{position:sticky;top:0;z-index:100;background:rgba(247,245,240,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+  .logo{font-family:var(--display);font-weight:600;font-size:25px;letter-spacing:-.5px;color:var(--ink)}
+  .logo span{color:var(--coral)}
+  .navlinks{display:flex;align-items:center;gap:2px}
+  .navitem{position:relative}
+  .navitem>button,.navitem>a{font-family:var(--sans);font-weight:500;font-size:14.5px;color:var(--ink);background:none;border:none;cursor:pointer;padding:10px 14px;border-radius:8px;display:flex;align-items:center;gap:5px;transition:background .15s}
+  .navitem>button:hover,.navitem>a:hover{background:var(--paper-warm)}
+  .navitem>button svg{width:11px;height:11px;opacity:.5;transition:transform .2s}
+  .navitem:hover>button svg{transform:rotate(180deg)}
+  .dropdown{position:absolute;top:calc(100% + 8px);left:0;background:var(--white);border:1px solid var(--line);border-radius:14px;padding:10px;min-width:252px;box-shadow:0 24px 48px -18px rgba(10,22,40,.28);opacity:0;visibility:hidden;transform:translateY(8px);transition:all .2s ease}
+  .navitem:hover .dropdown{opacity:1;visibility:visible;transform:translateY(0)}
+  .dropdown a{display:block;padding:9px 12px;border-radius:8px;font-size:14px;font-weight:500;color:var(--ink-soft);transition:background .12s,color .12s}
+  .dropdown a:hover{background:var(--paper-warm);color:var(--teal)}
+  .nav-cta{font-family:var(--sans);font-weight:600;font-size:14px;background:var(--ink);color:var(--paper);padding:11px 20px;border-radius:9px;transition:background .2s,transform .15s;white-space:nowrap}
+  .nav-cta:hover{background:var(--coral);transform:translateY(-1px)}
+  .menu-toggle{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:5px}
+  .menu-toggle span{width:24px;height:2px;background:var(--ink);border-radius:2px}
+
+  .btn-primary{font-family:var(--sans);font-weight:600;font-size:16px;background:var(--coral);color:var(--white);padding:15px 30px;border-radius:11px;display:inline-flex;align-items:center;gap:9px;transition:transform .15s,box-shadow .2s;box-shadow:0 12px 28px -10px rgba(255,90,60,.6);cursor:pointer;border:none}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 36px -10px rgba(255,90,60,.7)}
+  .btn-ghost{font-family:var(--sans);font-weight:600;font-size:16px;color:var(--ink);padding:15px 26px;border:1.5px solid var(--ink);border-radius:11px;transition:all .18s;display:inline-flex;align-items:center;gap:9px}
+  .btn-ghost:hover{background:var(--ink);color:var(--paper)}
+
+  /* ========== 1 — HERO ========== */
+  .hero{position:relative;padding:104px 0 92px;overflow:hidden}
+  .hero-grid-bg{position:absolute;inset:0;z-index:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(ellipse 80% 65% at 72% 30%,#000 0%,transparent 75%);mask-image:radial-gradient(ellipse 80% 65% at 72% 30%,#000 0%,transparent 75%);opacity:.5}
+  .hero .wrap{position:relative;z-index:1}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-family:var(--mono);font-size:12.5px;letter-spacing:1px;text-transform:uppercase;color:var(--teal);background:rgba(13,92,99,.08);border:1px solid rgba(13,92,99,.2);padding:7px 14px;border-radius:100px;margin-bottom:28px}
+  .eyebrow .dot{width:7px;height:7px;background:var(--coral);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+  h1.hero-title{font-family:var(--display);font-weight:500;font-size:clamp(40px,6vw,72px);line-height:1.03;letter-spacing:-1.8px;max-width:16ch;margin-bottom:8px}
+  h1.hero-title .accent{color:var(--coral);font-style:italic}
+  .hero-sub{font-size:19px;color:var(--ink-soft);max-width:58ch;margin:28px 0 38px;line-height:1.6}
+  .hero-sub strong{color:var(--ink);font-weight:600}
+  .hero-actions{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .hero-metrics{display:flex;gap:48px;margin-top:64px;flex-wrap:wrap}
+  .hm .hmn{font-family:var(--display);font-weight:600;font-size:40px;letter-spacing:-1.5px;line-height:1;font-variant-numeric:tabular-nums}
+  .hm .hml{font-size:14px;color:var(--ink-soft);margin-top:8px;max-width:22ch}
+
+  /* logo strip inside hero */
+  .hero-logos{margin-top:54px;padding-top:40px;border-top:1px solid var(--line)}
+  .logo-track{display:flex;align-items:center;gap:48px;flex-wrap:wrap}
+  .logo-track img{height:24px;width:auto;opacity:.55;filter:grayscale(1);transition:opacity .2s,filter .2s}
+  .logo-track img:hover{opacity:1;filter:grayscale(0)}
+
+  /* ========== 2 — USE CASES ========== */
+  .usecases{padding:104px 0}
+  .uc-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:24px;margin-top:12px}
+  .uccard{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:36px 32px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:transform .2s,box-shadow .25s,border-color .2s}
+  .uccard:hover{transform:translateY(-4px);box-shadow:0 28px 50px -28px rgba(10,22,40,.28);border-color:var(--teal)}
+  .uccard.featured{background:var(--ink);border-color:var(--ink)}
+  .uccard.featured .uc-name{color:var(--paper)}
+  .uccard.featured .uc-desc{color:#c4cdd9}
+  .uccard.featured .uc-out{color:var(--paper);border-color:var(--line-dark)}
+  .uc-flag{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.6px;text-transform:uppercase;padding:5px 11px;border-radius:100px;margin-bottom:22px}
+  .uccard .uc-flag{background:var(--paper-warm);color:var(--teal)}
+  .uccard.featured .uc-flag{background:var(--coral);color:var(--white)}
+  .uc-name{font-family:var(--display);font-weight:600;font-size:25px;letter-spacing:-.5px;margin-bottom:14px;line-height:1.1}
+  .uccard.featured .uc-name{font-size:29px}
+  .uc-desc{font-size:15px;line-height:1.62;color:var(--ink-soft);flex:1;margin-bottom:22px}
+  .uc-out{font-family:var(--mono);font-size:12.5px;color:var(--teal);border-top:1px solid var(--line);padding-top:18px;margin-bottom:22px;line-height:1.5}
+  .uc-out b{color:inherit;font-weight:600}
+  .uc-link{font-family:var(--sans);font-weight:600;font-size:14.5px;color:var(--coral);display:inline-flex;align-items:center;gap:7px}
+  .uccard.featured .uc-link{color:var(--coral-soft)}
+  .uc-link svg{width:14px;height:14px;transition:transform .2s}
+  .uccard:hover .uc-link svg{transform:translateX(4px)}
+
+  /* expanded featured Target ID story */
+  .uc-feature{background:var(--ink);color:var(--paper);border-radius:22px;padding:54px 56px;margin-bottom:24px;position:relative;overflow:hidden}
+  .uc-feature .uf-flag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.6px;text-transform:uppercase;background:var(--coral);color:#fff;padding:5px 12px;border-radius:100px;margin-bottom:22px}
+  .uc-feature h3{font-family:var(--display);font-weight:600;font-size:clamp(26px,3.2vw,36px);letter-spacing:-.8px;line-height:1.1;max-width:20ch;margin-bottom:14px}
+  .uc-feature .uf-lede{font-size:17px;color:#c4cdd9;line-height:1.6;max-width:62ch}
+  .uf-lede{font-size:17px;line-height:1.6;color:#c4cdd9;max-width:64ch;margin:24px 0 4px}
+  .uf-turn{margin:34px 0;padding:0}
+  .uf-turn .ut-q{font-family:var(--display);font-style:italic;font-size:clamp(19px,2.4vw,26px);line-height:1.35;color:var(--paper)}
+  .uf-turn .ut-q b{color:var(--coral-soft);font-style:normal;font-weight:600}
+  .uf-caplead{font-family:var(--mono);font-size:12px;letter-spacing:.5px;text-transform:uppercase;color:#9aa6b5;margin:34px 0 16px}
+  .uf-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:8px}
+  .uf-cap{display:flex;flex-direction:column;gap:7px;padding:0 22px 0 0;border-right:1px solid var(--line-dark)}
+  .uf-flow .uf-cap:last-child{border-right:none;padding-right:0}
+  .uf-cap .cn{font-family:var(--mono);font-size:11.5px;color:var(--coral);letter-spacing:.5px;text-transform:uppercase}
+  .uf-cap .ct{font-family:var(--display);font-weight:600;font-size:18px;color:var(--paper);letter-spacing:-.3px;line-height:1.15}
+  .uf-cap .cd{font-size:13.5px;color:#9aa6b5;line-height:1.55}
+  .uf-bottom{display:flex;align-items:center;justify-content:space-between;gap:28px;margin-top:38px;padding-top:30px;border-top:1px solid var(--line-dark);flex-wrap:wrap}
+  .uf-outcome{font-size:16px;color:var(--paper);max-width:48ch;line-height:1.5}
+  .uf-outcome b{color:var(--coral-soft);font-weight:600}
+  .uf-cta{font-family:var(--sans);font-weight:600;font-size:15px;background:var(--coral);color:#fff;padding:14px 26px;border-radius:11px;display:inline-flex;align-items:center;gap:9px;white-space:nowrap;transition:transform .15s,box-shadow .2s;box-shadow:0 12px 28px -12px rgba(255,90,60,.7)}
+  .uf-cta:hover{transform:translateY(-2px)}
+  .uc-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+
+  /* ========== 3 — DATA WE WORK WITH ========== */
+  .data{background:var(--paper-warm);padding:104px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .data-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:12px}
+  .dcard{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:30px 26px;transition:transform .2s,box-shadow .25s}
+  .dcard:hover{transform:translateY(-4px);box-shadow:0 24px 44px -26px rgba(10,22,40,.26)}
+  .dcard .dicon{width:44px;height:44px;border-radius:11px;background:rgba(13,92,99,.1);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+  .dcard .dicon svg{width:22px;height:22px;color:var(--teal)}
+  .dcard h3{font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:-.4px;margin-bottom:9px}
+  .dcard p{font-size:14px;color:var(--ink-soft);line-height:1.55}
+  .data-cta{display:flex;align-items:center;justify-content:flex-start;gap:24px;margin-top:44px;flex-wrap:wrap}
+  .data-cta p{font-size:16px;color:var(--ink-soft);margin:0}
+
+  /* ========== 4 — TECHNOLOGY ========== */
+  .tech{padding:104px 0}
+  .tech-wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:center}
+  .tech-flow{display:flex;flex-direction:column;gap:14px}
+  .tech-layer{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:24px 28px;transition:transform .18s,border-color .18s}
+  .tech-layer:hover{transform:translateX(6px);border-color:var(--teal)}
+  .tech-layer .tl-tag{font-family:var(--mono);font-size:11.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--coral);margin-bottom:8px}
+  .tech-layer h4{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:-.3px;line-height:1.15;margin-bottom:6px}
+  .tech-layer p{font-size:13.5px;color:var(--ink-soft);line-height:1.5;margin-bottom:14px}
+  .tech-layer .tl-metrics{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  .tech-layer .tl-metrics span{font-size:12.5px;color:var(--ink-soft);line-height:1.3;display:inline-flex;align-items:center;gap:8px;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:9px 13px}
+  .tech-layer .tl-metrics span b{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-.5px;color:var(--teal);font-variant-numeric:tabular-nums;line-height:1}
+  .tech-layer .tl-metrics span.tl-qual::before{content:"";flex-shrink:0;width:16px;height:16px;border-radius:50%;background:rgba(13,92,99,.12) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' fill='none'%3E%3Cpath d='M2 6l3 3 5-6' stroke='%230d5c63' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/10px no-repeat}
+  .tech-layer .tl-tools{margin-top:14px;padding-top:13px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-soft)}
+  .tech-layer .tl-tools .tt-label{font-family:var(--mono);font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:#9aa6b5;margin-right:8px}
+  .tech-layer .tl-tools span.tool{font-weight:600;color:var(--ink)}
+  .tech-layer .tl-tools span.tool:not(:last-child)::after{content:"·";color:var(--line);font-weight:400;margin:0 7px}
+
+  /* ========== 5 — IMPACT & PROOF (dark base, light surfaces) ========== */
+  .impact{background:var(--ink);color:var(--paper);padding:104px 0}
+  .impact .sec-kicker{color:var(--gold)}
+  .impact .sec-title{color:var(--paper)}
+
+  /* 1 — testimonials (white, highest emphasis) */
+  .carousel{display:flex;align-items:center;gap:18px;max-width:940px;margin:0 auto}
+  .car-window{flex:1;overflow:hidden;border-radius:24px}
+  .car-track{display:flex;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+  .car-slide{flex:0 0 100%;background:var(--white);color:var(--ink);padding:58px 64px;text-align:center;border:1px solid var(--white);box-shadow:0 40px 80px -28px rgba(0,0,0,.6)}
+  .car-slide .cs-mark{font-family:var(--display);font-weight:600;font-size:84px;line-height:.5;color:var(--coral);height:40px}
+  .car-slide blockquote{font-family:var(--display);font-weight:500;font-size:clamp(21px,2.7vw,30px);line-height:1.4;letter-spacing:-.5px;color:var(--ink);margin:0 0 30px;border:none}
+  .car-slide .cs-who{display:flex;align-items:center;justify-content:center;gap:14px}
+  .car-slide .cs-avatar{width:48px;height:48px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:var(--display);font-weight:600;font-size:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .car-slide .cs-who>div{text-align:left}
+  .car-slide .cs-who .nm{display:block;font-weight:700;font-size:15px;color:var(--ink)}
+  .car-slide .cs-who .rl{display:block;font-family:var(--mono);font-size:12.5px;color:var(--teal)}
+  .car-arrow{flex-shrink:0;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid var(--line-dark);color:var(--paper);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s}
+  .car-arrow:hover{background:rgba(255,255,255,.16);border-color:var(--coral-soft);transform:translateY(-1px)}
+  .car-arrow svg{width:16px;height:16px}
+  .car-dots{display:flex;gap:9px;justify-content:center;margin-top:26px}
+  .car-dot{width:8px;height:8px;border-radius:50%;background:var(--line-dark);border:none;cursor:pointer;padding:0;transition:background .2s,width .2s}
+  .car-dot.active{background:var(--coral);width:22px;border-radius:5px}
+
+  /* 2 — outcomes (warm amber tint, secondary) */
+  .tier-label{font-family:var(--mono);font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:#9aa6b5;text-align:center;max-width:940px;margin:56px auto 18px}
+  .impact-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:940px;margin:0 auto;background:linear-gradient(180deg,#f8efd9,#f4e6c4);border:1px solid #ecdcb0;border-radius:18px;overflow:hidden}
+  .im-item{text-align:center;padding:34px 28px;border-right:1px solid #ecdcb0}
+  .im-item:last-child{border-right:none}
+  .im-item .imn{display:block;font-family:var(--display);font-weight:600;font-size:clamp(38px,4.6vw,52px);letter-spacing:-2px;line-height:1;color:#8a6d1e;font-variant-numeric:tabular-nums}
+  .im-item .iml{display:block;font-size:14px;color:#7a6630;margin-top:12px;line-height:1.4;max-width:24ch;margin-left:auto;margin-right:auto}
+
+  /* 3 — recognition (muted slate, third) */
+  .press-row{display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:940px;margin:0 auto}
+  .press-card{background:#eef1f5;border:1px solid #dde3ea;border-left:3px solid var(--coral);border-radius:14px;padding:30px 32px;position:relative}
+  .press-card .pc-award{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--coral);margin-bottom:14px}
+  .press-card .pc-award svg{width:13px;height:13px}
+  .press-card .pc-logo{font-family:var(--display);font-weight:600;font-size:16px;color:#3a4a60;margin-bottom:14px;letter-spacing:-.2px}
+  .press-card p{font-size:16px;line-height:1.5;color:#4a5a70}
+
+  /* 4 — resources (lowest emphasis) */
+  .proof-links{display:flex;gap:14px;margin:48px auto 0;flex-wrap:wrap;font-size:14.5px;justify-content:center;max-width:940px}
+  .proof-links a{color:var(--paper);font-weight:600;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.05);border:1px solid var(--line-dark);padding:11px 20px;border-radius:100px;transition:all .18s}
+  .proof-links a:hover{background:rgba(255,255,255,.1);border-color:var(--coral-soft)}
+  .proof-links a svg{color:var(--coral-soft)}
+
+  /* ========== 6 — CONSULTATION + FORM ========== */
+  .consult{padding:104px 0;position:relative;overflow:hidden}
+  .consult-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+  .consult h2{font-family:var(--display);font-weight:500;font-size:clamp(32px,4.4vw,52px);line-height:1.05;letter-spacing:-1.3px;max-width:14ch}
+  .consult h2 .accent{color:var(--coral);font-style:italic}
+  .consult .cintro{font-size:18px;color:var(--ink-soft);margin-top:22px;line-height:1.6;max-width:42ch}
+  .consult-list{list-style:none;margin-top:30px;display:flex;flex-direction:column;gap:14px}
+  .consult-list li{display:flex;gap:13px;font-size:15.5px;color:var(--ink-soft)}
+  .consult-list li .ck{flex-shrink:0;width:22px;height:22px;border-radius:7px;background:rgba(13,92,99,.1);display:flex;align-items:center;justify-content:center;margin-top:1px}
+  .consult-list li .ck svg{width:12px;height:12px;color:var(--teal)}
+  .form-card{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:38px;box-shadow:0 30px 60px -34px rgba(10,22,40,.3)}
+  .form-card .fc-title{font-family:var(--display);font-weight:600;font-size:22px;letter-spacing:-.4px;margin-bottom:6px}
+  .form-card .fc-sub{font-size:14px;color:var(--ink-soft);margin-bottom:26px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:7px}
+  .field label .req{color:var(--coral)}
+  .field input,.field select,.field textarea{width:100%;font-family:var(--sans);font-size:14.5px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:12px 14px;transition:border .15s,box-shadow .15s}
+  .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,92,99,.12)}
+  .field textarea{resize:vertical;min-height:84px}
+  .form-card button{width:100%;margin-top:6px}
+  .form-note{font-size:12px;color:var(--ink-soft);text-align:center;margin-top:16px;line-height:1.5}
+  .form-success{display:none;text-align:center;padding:30px 10px}
+  .form-success .sc-ic{width:56px;height:56px;border-radius:50%;background:rgba(13,92,99,.12);display:flex;align-items:center;justify-content:center;margin:0 auto 18px}
+  .form-success .sc-ic svg{width:28px;height:28px;color:var(--teal)}
+  .form-success h3{font-family:var(--display);font-weight:600;font-size:24px;margin-bottom:8px}
+  .form-success p{font-size:15px;color:var(--ink-soft)}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--ink);color:#9aa6b5;border-top:1px solid var(--line-dark)}
+  .foot-top{display:grid;grid-template-columns:2fr 1.6fr 1fr;gap:48px;padding:60px 0 46px;border-bottom:1px solid var(--line-dark)}
+  .foot-col-split{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}
+  .foot-logo{font-family:var(--display);font-weight:600;font-size:26px;color:var(--paper);margin-bottom:14px}
+  .foot-logo span{color:var(--coral)}
+  .foot-blurb{font-size:14px;line-height:1.6;max-width:32ch}
+  .foot-col h4{font-family:var(--mono);font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--paper);margin-bottom:18px}
+  .foot-col a{display:block;font-size:14px;padding:6px 0;color:#9aa6b5;transition:color .15s}
+  .foot-col a:hover{color:var(--coral-soft)}
+  .foot-bot{display:flex;justify-content:space-between;align-items:center;padding:26px 0;font-size:13px;flex-wrap:wrap;gap:16px}
+  .foot-cities{display:flex;gap:22px;font-family:var(--mono);font-size:12px;letter-spacing:.5px}
+
+  @media(max-width:980px){
+    .navlinks{display:none}
+    .menu-toggle{display:flex}
+    .uc-grid{grid-template-columns:1fr}
+    .uc-grid-2{grid-template-columns:1fr}
+    .uf-flow{grid-template-columns:1fr;gap:20px}
+    .uf-cap{border-right:none;border-bottom:1px solid var(--line-dark);padding:0 0 18px 0}
+    .uf-flow .uf-cap:last-child{padding-bottom:0}
+    .uc-feature{padding:38px 28px}
+    .uf-bottom{flex-direction:column;align-items:flex-start}
+    .data-grid{grid-template-columns:1fr 1fr}
+    .tech-wrap,.consult-grid{grid-template-columns:1fr;gap:40px}
+    .press-row{grid-template-columns:1fr}
+    .car-slide{padding:38px 28px}
+    .impact-metrics{grid-template-columns:1fr;gap:28px}
+    .foot-top{grid-template-columns:1fr 1fr;gap:30px}
+  }
+  @media(max-width:560px){
+    .wrap{padding:0 20px}
+    .data-grid,.foot-top,.frow{grid-template-columns:1fr}
+    .hero-metrics{gap:30px}
+  }
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCE -->
+<div class="announce">
+  Why Open Targets demands a better evidence layer for target discovery. <a href="#">Read the blog &rarr;</a>
+</div>
+
+<!-- NAV -->
+<header>
+  <nav class="wrap">
+    <a href="#" class="logo">eluci<span>data</span></a>
+    <div class="navlinks">
+      <div class="navitem">
+        <button>Use Cases <svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <div class="dropdown">
+          <a href="#usecases">Target Identification &amp; Validation</a>
+          <a href="#usecases">Enterprise Data Strategy</a>
+          <a href="#usecases">Patient Stratification and Phenotyping</a>
+        </div>
+      </div>
+      <div class="navitem">
+        <button>Data We Work With <svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <div class="dropdown">
+          <a href="#data">Omics</a><a href="#data">Clinical</a><a href="#data">Imaging</a><a href="#data">Multimodal</a>
+        </div>
+      </div>
+      <div class="navitem">
+        <button>Solutions <svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <div class="dropdown">
+          <a href="#">Data Curation</a><a href="#">Knowledge Graph</a><a href="#">AI Models</a><a href="#">Infrastructure for R&amp;D</a><a href="#">End-to-end Agentic Workflows</a>
+        </div>
+      </div>
+      <div class="navitem">
+        <button>Resources <svg viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+        <div class="dropdown">
+          <a href="#">Blogs</a><a href="#">Events</a><a href="#">Assets</a><a href="#">Publications</a><a href="#">Drug Targets</a><a href="#">Glossary</a>
+        </div>
+      </div>
+      <a href="#consult" class="nav-cta">Talk to an Expert</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+</header>
+
+<!-- ============ 1 — HERO ============ -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="wrap">
+    <span class="eyebrow"><span class="dot"></span> Data-centric AI for life sciences</span>
+    <h1 class="hero-title">Build trusted AI on <span class="accent">&lsquo;real&rsquo;</span> biomedical data.</h1>
+    <p class="hero-sub">We help teams build data-centric AI solutions across the pharma value chain and are privileged to be part of <strong>40+ programs advanced to clinical trials.</strong></p>
+    <div class="hero-actions">
+      <a href="#consult" class="btn-primary">Request a Scientific Consultation <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#usecases" class="btn-ghost">Explore use cases</a>
+    </div>
+    <div class="hero-metrics">
+      <div class="hm"><div class="hmn">90+</div><div class="hml">Biopharma partners</div></div>
+      <div class="hm"><div class="hmn">200+</div><div class="hml">Data products deployed</div></div>
+      <div class="hm"><div class="hmn">4&times;</div><div class="hml">Acceleration across R&amp;D programs</div></div>
+    </div>
+    <div class="hero-logos">
+      <div class="logo-track">
+        <img src="https://cdn.prod.website-files.com/61e5670dd964f785433722b9/65e1b2fc23419047dadb6923_Alnylam%20(3).webp" alt="Alnylam">
+        <img src="https://cdn.prod.website-files.com/61e5670dd964f785433722b9/65e1b2889f5e3cdfd860e268_Alnylam%20(2).webp" alt="Eli Lilly">
+        <img src="https://cdn.prod.website-files.com/61e5670dd964f785433722b9/65115d22db112b314a557b2f_Alnylam%20(3).svg" alt="Bristol Myers Squibb">
+        <img src="https://cdn.prod.website-files.com/61e5670dd964f785433722b9/66067fb489c489261417a207_janssen.webp" alt="Janssen">
+        <img src="https://cdn.prod.website-files.com/61e5670dd964f785433722b9/692ed30330edb0279b459a37_Clip%20path%20group.svg" alt="Boehringer Ingelheim">
+        <img src="https://cdn.prod.website-files.com/61e5670dd964f785433722b9/65115d221a226284afa63876_Alnylam%20(5).svg" alt="Pfizer">
+        <img src="https://cdn.prod.website-files.com/61e5670dd964f785433722b9/66067fb01d08d8724a57b673_Deep%20mind.webp" alt="DeepMind">
+        <img src="https://cdn.prod.website-files.com/61e5670dd964f785433722b9/692ed31b848b4e056f032d41_otsuka%201.svg" alt="Otsuka">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2 — USE CASES ============ -->
+<section class="usecases" id="usecases">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">Use cases</div>
+      <h2 class="sec-title">Built around your hardest R&amp;D decisions.</h2>
+      <p class="sec-intro">We help you connect your data to the R&amp;D use cases that bring better therapies to patients.</p>
+    </div>
+
+    <!-- FEATURED: TARGET ID story, condensed -->
+    <div class="uc-feature">
+      <span class="uf-flag">Featured &middot; Target Identification &amp; Validation</span>
+      <h3>Find and prioritize the right targets earlier.</h3>
+
+      <p class="uf-lede">We help CSOs, discovery leaders, and computational biology teams narrow thousands of genes and CRISPR screen hits into a focused validation shortlist.</p>
+
+      <p class="uf-caplead">How we get you there</p>
+      <div class="uf-flow">
+        <div class="uf-cap">
+          <span class="cn">Bring it together</span>
+          <div class="ct">Multimodal data harmonization</div>
+          <div class="cd">We pull your omics, genetics, literature, and experimental data into one discovery-ready foundation you can actually evaluate targets against.</div>
+        </div>
+        <div class="uf-cap">
+          <span class="cn">Find what matters</span>
+          <div class="ct">Knowledge graph shortlisting</div>
+          <div class="cd">We connect genes, pathways, diseases, and phenotypes across studies to surface the targets with the strongest biological support.</div>
+        </div>
+        <div class="uf-cap">
+          <span class="cn">Build confidence</span>
+          <div class="ct">Pathway &amp; perturbation modeling</div>
+          <div class="cd">We predict the downstream effects of perturbing a gene, so the targets you commit to are backed by mechanism.</div>
+        </div>
+      </div>
+
+      <div class="uf-bottom">
+        <div class="uf-outcome"><b>20,000 genes, narrowed to the 2 worth validating.</b></div>
+        <a href="#consult" class="uf-cta">Talk to an Expert <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+
+    <!-- SECONDARY use cases -->
+    <div class="uc-grid-2">
+      <div class="uccard">
+        <span class="uc-flag">Data foundation</span>
+        <div class="uc-name">Enterprise Data Strategy</div>
+        <div class="uc-desc">We help bioinformatics, platform, and data infrastructure leaders make multimodal data usable across programs, with curated datasets, production-grade pipelines, and reusable AI-ready data products for analytics and modeling at scale.</div>
+        <div class="uc-out">Outcome: <b>one source of truth</b> your teams can rely on.</div>
+        <a href="#consult" class="uc-link">Learn more <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="uccard">
+        <span class="uc-flag">Translational</span>
+        <div class="uc-name">Patient Stratification and Phenotyping</div>
+        <div class="uc-desc">We help clinical and translational teams convert fragmented clinical records, molecular reports, and diagnostic data into structured, cohort-ready datasets for biomarker strategy, cohort design, and trial planning.</div>
+        <div class="uc-out">Outcome: <b>better-defined patient cohorts.</b></div>
+        <a href="#consult" class="uc-link">Learn more <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3 — DATA WE WORK WITH ============ -->
+<section class="data" id="data">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="sec-kicker">Data we work with</div>
+      <h2 class="sec-title">27+ data types across the modalities that matter to your biology.</h2>
+      <p class="sec-intro">We connect clinical, literature, radiology, pathology, molecular, and assay data into one structured biomedical data foundation, built to power cross-modal insight across discovery, translational, and clinical AI applications.</p>
+    </div>
+    <div class="data-grid">
+      <div class="dcard">
+        <div class="dicon"><svg viewBox="0 0 24 24" fill="none"><path d="M6 2v20M18 2v20M6 7h12M6 12h12M6 17h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Omics</h3>
+        <p>Genomics, transcriptomics, proteomics, single-cell, spatial, assay data, and more, prepared for analysis and AI.</p>
+      </div>
+      <div class="dcard">
+        <div class="dicon"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="3" width="16" height="18" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Clinical</h3>
+        <p>EHRs, clinical trials, real-world evidence, literature, reports, and patient timelines structured for cohort discovery.</p>
+      </div>
+      <div class="dcard">
+        <div class="dicon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><circle cx="9" cy="9" r="1.8" stroke="currentColor" stroke-width="1.6"/><path d="M4 16l4.5-4 3.5 3 3-2.5 4.5 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Imaging</h3>
+        <p>Pathology, radiology, spatial imaging, whole slide images, and phenotype signals linked to clinical and molecular context.</p>
+      </div>
+      <div class="dcard">
+        <div class="dicon"><svg viewBox="0 0 24 24" fill="none"><circle cx="7" cy="8" r="3" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="16" r="3" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 10l5 4" stroke="currentColor" stroke-width="1.6"/></svg></div>
+        <h3>Multimodal</h3>
+        <p>Clinical, imaging, and molecular data connected so teams can read signal across modalities.</p>
+      </div>
+    </div>
+    <div class="data-cta">
+      <p>Not sure how your data fits together? We&rsquo;ll help you map it.</p>
+      <a href="#consult" class="btn-ghost">Talk to an Expert <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4 — TECHNOLOGY ============ -->
+<section class="tech" id="tech">
+  <div class="wrap">
+    <div class="tech-wrap">
+      <div>
+        <div class="sec-kicker">Solution Architecture</div>
+        <h2 class="sec-title" style="font-size:clamp(28px,3.6vw,40px)">The stack that makes biomedical AI work across programs.</h2>
+        <p class="sec-intro">We combine modular accelerators across four levels: AI-ready data, connected evidence, mechanistic insight, and decision-ready outputs. These run within our tech, Polly, or integrate directly into your existing research and cloud infrastructure.</p>
+        <a href="#consult" class="btn-ghost" style="margin-top:28px">Explore our solutions <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      </div>
+      <div class="tech-flow">
+        <div class="tech-layer">
+          <div class="tl-tag">Data Layer</div>
+          <h4>Reusable multimodal data foundations</h4>
+          <p>Structure literature, omics, imaging, assay, and clinical datasets into analysis-ready data products.</p>
+          <div class="tl-metrics"><span><b>4&times;</b> faster dataset preparation</span><span><b>&gt;95%</b> metadata completeness</span></div>
+          <div class="tl-tools"><span class="tt-label">Powered by</span><span class="tool">Scout</span><span class="tool">Xtract</span></div>
+        </div>
+        <div class="tech-layer">
+          <div class="tl-tag">Evidence Layer</div>
+          <h4>Connected evidence across programs</h4>
+          <p>Link genes, diseases, compounds, and outcomes into reusable knowledge graphs.</p>
+          <div class="tl-metrics"><span><b>5&times;</b> faster target prioritization</span><span class="tl-qual">Evidence reuse across studies</span></div>
+          <div class="tl-tools"><span class="tt-label">Powered by</span><span class="tool">Knowledge Graphs</span><span class="tool">Lens</span></div>
+        </div>
+        <div class="tech-layer">
+          <div class="tl-tag">Mechanistic Layer</div>
+          <h4>Mechanistic insight from fine-tuned models</h4>
+          <p>Apply perturbation and stratification models to interpret biological signals across datasets.</p>
+          <div class="tl-metrics"><span><b>2&times;</b> earlier translational risk detection</span><span class="tl-qual">Cross-context signal discovery</span></div>
+          <div class="tl-tools"><span class="tt-label">Powered by</span><span class="tool">El-Prior</span><span class="tool">BioAgent</span></div>
+        </div>
+        <div class="tech-layer">
+          <div class="tl-tag">Consumption Layer</div>
+          <h4>Decision-ready outputs for research teams</h4>
+          <p>Deliver cohorts, hypotheses, and evidence through Co-Scientist workflows and dashboards.</p>
+          <div class="tl-metrics"><span><b>3&times;</b> faster cohort construction</span></div>
+          <div class="tl-tools"><span class="tt-label">Powered by</span><span class="tool">Co-Scientist</span><span class="tool">Cohorter</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5 — VOICES OF IMPACT ============ -->
+<section class="impact">
+  <div class="wrap">
+    <div class="sec-head" style="text-align:center;max-width:none;margin-bottom:48px">
+      <div class="sec-kicker" style="color:var(--gold)">Impact &amp; proof</div>
+      <h2 class="sec-title" style="color:var(--paper)">What our customers say about us.</h2>
+    </div>
+
+    <!-- Testimonial carousel (white highlighted area) -->
+    <div class="carousel">
+      <button class="car-arrow car-prev" onclick="moveCarousel(-1)" aria-label="Previous">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="car-window">
+        <div class="car-track" id="carTrack">
+          <div class="car-slide">
+            <div class="cs-mark">&ldquo;</div>
+            <blockquote>Elucidata&rsquo;s solutions helped us deepen our understanding of neoantigen-reactive T cells, enabling crucial insights within six months and a clear direction on how best to develop these complex therapeutics.</blockquote>
+            <div class="cs-who">
+              <div class="cs-avatar">RA</div>
+              <div><span class="nm">Rub&eacute;n Alvarez Rodriguez</span><span class="rl">Head of Research, cTRL Therapeutics</span></div>
+            </div>
+          </div>
+          <div class="car-slide">
+            <div class="cs-mark">&ldquo;</div>
+            <blockquote>We were looking for public data on a tight deadline to make decisions on our back-up targets for solid tumors. Elucidata understood our relevance criteria and delivered high-quality harmonized data ahead of schedule.</blockquote>
+            <div class="cs-who">
+              <div class="cs-avatar">MT</div>
+              <div><span class="nm">Ming &lsquo;Tommy&rsquo; Tang</span><span class="rl">Director of Computational Biology, Immunitas</span></div>
+            </div>
+          </div>
+          <div class="car-slide">
+            <div class="cs-mark">&ldquo;</div>
+            <blockquote>The unique partnership we have lets us work hand-in-hand with engineers and scientists to rapidly develop novel hypotheses we can test in the lab. Impressed by their power to integrate large datasets.</blockquote>
+            <div class="cs-who">
+              <div class="cs-avatar">KY</div>
+              <div><span class="nm">Dr. Kate Yen</span><span class="rl">Founder &amp; CEO, Auron Therapeutics</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="car-arrow car-next" onclick="moveCarousel(1)" aria-label="Next">
+        <svg viewBox="0 0 16 16" fill="none"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div>
+    <div class="car-dots" id="carDots">
+      <button class="car-dot active" onclick="goCarousel(0)" aria-label="Slide 1"></button>
+      <button class="car-dot" onclick="goCarousel(1)" aria-label="Slide 2"></button>
+      <button class="car-dot" onclick="goCarousel(2)" aria-label="Slide 3"></button>
+    </div>
+
+    <!-- Recognition -->
+    <p class="tier-label">Recognized by the field</p>
+    <div class="press-row">
+      <div class="press-card">
+        <div class="pc-award"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M6 9.5L5 14l3-1.5L11 14l-1-4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> Top 7 of 800</div>
+        <div class="pc-logo">Broad Institute</div>
+        <p>Elucidata ranks among the Top 7 out of 800 global teams in the Broad Institute&rsquo;s Autoimmune Disease ML Challenge.</p>
+      </div>
+      <div class="press-card">
+        <div class="pc-award"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="6" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M6 9.5L5 14l3-1.5L11 14l-1-4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg> First place</div>
+        <div class="pc-logo">NIH &middot; National Cancer Institute</div>
+        <p>First-place winners: NCI-CRDC (Cancer Research Data Commons) AI Data Readiness Challenge.</p>
+      </div>
+    </div>
+
+    <div class="proof-links">
+      <a href="#">Case studies <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#">Press &amp; media <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#">Publications <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6 — CONSULTATION + FORM ============ -->
+<section class="consult" id="consult">
+  <div class="wrap">
+    <div class="consult-grid">
+      <div>
+        <div class="sec-kicker">Request a scientific consultation</div>
+        <h2>Bring us your <span class="accent">toughest R&amp;D question.</span></h2>
+        <p class="cintro">Tell us about your program and we&rsquo;ll connect you with a scientist, not a sales rep, to talk through what the right data foundation and AI could do for it.</p>
+        <ul class="consult-list">
+          <li><span class="ck"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>A working session with a domain scientist, scoped to your biology</span></li>
+          <li><span class="ck"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>A clear view of what&rsquo;s possible with the data you already have</span></li>
+          <li><span class="ck"><svg viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>A rigorous, no-obligation conversation about your R&amp;D challenge</span></li>
+        </ul>
+      </div>
+
+      <div class="form-card">
+        <div id="formBody">
+          <div class="fc-title">Talk to an Expert</div>
+          <div class="fc-sub">We&rsquo;ll respond within one business day.</div>
+          <div class="frow">
+            <div class="field"><label>First name <span class="req">*</span></label><input type="text" id="f_first" placeholder="Jane"></div>
+            <div class="field"><label>Last name <span class="req">*</span></label><input type="text" id="f_last" placeholder="Doe"></div>
+          </div>
+          <div class="field"><label>Work email <span class="req">*</span></label><input type="email" id="f_email" placeholder="jane@company.com"></div>
+          <div class="field"><label>Organization <span class="req">*</span></label><input type="text" id="f_org" placeholder="Company / institution"></div>
+          <div class="field"><label>Area of interest</label>
+            <select id="f_interest">
+              <option>Target Identification &amp; Validation</option>
+              <option>Enterprise Data Strategy</option>
+              <option>Patient Stratification and Phenotyping</option>
+              <option>Not sure yet — exploring</option>
+            </select>
+          </div>
+          <div class="field"><label>What R&amp;D challenge are you working on?</label><textarea id="f_msg" placeholder="A few sentences about your program or decision..."></textarea></div>
+          <button class="btn-primary" onclick="submitForm()">Submit <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          <div class="form-note">By submitting, you agree to be contacted about your request. We respect your data &mdash; no spam, ever.</div>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div class="sc-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-12" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h3>Thank you</h3>
+          <p>Your request is in. A scientist from our team will reach out within one business day.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <div class="foot-logo">eluci<span>data</span></div>
+        <p class="foot-blurb">Elucidata is a data-centric AI company purpose-built for life sciences. We have worked with 90 R&amp;D organizations over 10 years. 40 of the programs we have supported have advanced to IND or beyond.</p>
+        <p class="foot-blurb" style="margin-top:14px">Let us help you: <a href="mailto:info@elucidata.io" style="color:var(--coral-soft);font-weight:600">info@elucidata.io</a></p>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <div class="foot-col-split">
+          <div>
+            <a href="#">About Us</a>
+            <a href="#">Leadership</a>
+            <a href="#">Mission</a>
+            <a href="#">Team</a>
+          </div>
+          <div>
+            <a href="#">Customers</a>
+            <a href="#">Careers</a>
+            <a href="#">Press &amp; Media</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+      </div>
+      <div class="foot-col">
+        <h4>Get in touch</h4>
+        <a href="#consult">Request a Consultation</a>
+        <a href="mailto:info@elucidata.io">info@elucidata.io</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <div class="foot-cities"><span>San Francisco</span><span>Boston</span><span>New Delhi</span><span>Bengaluru</span></div>
+      <div>&copy; All Rights Reserved, 2026 &middot; Elucidata</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  function submitForm(){
+    var first=document.getElementById('f_first').value.trim();
+    var email=document.getElementById('f_email').value.trim();
+    var org=document.getElementById('f_org').value.trim();
+    if(!first||!email||!org||email.indexOf('@')<0){
+      alert('Please fill in your name, a valid work email, and your organization.');
+      return;
+    }
+    document.getElementById('formBody').style.display='none';
+    document.getElementById('formSuccess').style.display='block';
+  }
+  var carIndex=0;
+  var carCount=3;
+  function renderCarousel(){
+    var track=document.getElementById('carTrack');
+    if(track) track.style.transform='translateX(-'+(carIndex*100)+'%)';
+    document.querySelectorAll('.car-dot').forEach(function(d,i){d.classList.toggle('active',i===carIndex);});
+  }
+  function moveCarousel(dir){
+    carIndex=(carIndex+dir+carCount)%carCount;
+    renderCarousel();
+  }
+  function goCarousel(i){carIndex=i;renderCarousel();}
+
+  document.querySelector('.menu-toggle').addEventListener('click',function(){
+    var n=document.querySelector('.navlinks');
+    n.style.display = (n.style.display==='flex')?'none':'flex';
+  });
+</script>
+
+</body>
+</html>
